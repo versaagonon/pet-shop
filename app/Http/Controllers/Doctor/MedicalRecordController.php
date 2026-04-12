@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Models\MedicalRecord;
+use App\Models\Medicine;
 use App\Models\Pet;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,8 @@ class MedicalRecordController extends Controller
 {
     public function index()
     {
-        $records = MedicalRecord::with(['pet.owner', 'doctor'])->latest()->get();
-        return view('doctor.medical_records.index', compact('records'));
+        $medicalRecords = MedicalRecord::with(['pet.owner', 'doctor', 'medicines'])->latest()->get();
+        return view('doctor.medical_records.index', compact('medicalRecords'));
     }
 
     public function create(Request $request)
@@ -22,7 +23,8 @@ class MedicalRecordController extends Controller
             $selectedPet = Pet::find($request->pet_id);
         }
         $pets = Pet::with('owner')->get();
-        return view('doctor.medical_records.create', compact('pets', 'selectedPet'));
+        $medicines = Medicine::orderBy('name')->get();
+        return view('doctor.medical_records.create', compact('pets', 'selectedPet', 'medicines'));
     }
 
     public function store(Request $request)
@@ -32,9 +34,13 @@ class MedicalRecordController extends Controller
             'diagnosis' => 'required|string',
             'treatment' => 'required|string',
             'date' => 'required|date',
+            'medicines' => 'nullable|array',
+            'medicines.*.id' => 'required_with:medicines|exists:medicines,id',
+            'medicines.*.quantity' => 'required_with:medicines|integer|min:1',
+            'medicines.*.dosage' => 'nullable|string',
         ]);
 
-        MedicalRecord::create([
+        $record = MedicalRecord::create([
             'pet_id' => $request->pet_id,
             'user_id' => auth()->id(),
             'diagnosis' => $request->diagnosis,
@@ -42,19 +48,33 @@ class MedicalRecordController extends Controller
             'date' => $request->date,
         ]);
 
-        return redirect()->route('doctor.medical_records.index')->with('success', 'Medical record added.');
+        // Sync medicines
+        if ($request->has('medicines')) {
+            foreach ($request->medicines as $med) {
+                if (!empty($med['id'])) {
+                    $record->medicines()->attach($med['id'], [
+                        'quantity' => $med['quantity'] ?? 1,
+                        'dosage' => $med['dosage'] ?? null,
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('doctor.medical-records.index')->with('success', 'Medical record added.');
     }
 
     public function show(MedicalRecord $medicalRecord)
     {
-        $medicalRecord->load(['pet.owner', 'doctor']);
+        $medicalRecord->load(['pet.owner', 'doctor', 'medicines']);
         return view('doctor.medical_records.show', compact('medicalRecord'));
     }
 
     public function edit(MedicalRecord $medicalRecord)
     {
+        $medicalRecord->load('medicines');
         $pets = Pet::with('owner')->get();
-        return view('doctor.medical_records.edit', compact('medicalRecord', 'pets'));
+        $medicines = Medicine::orderBy('name')->get();
+        return view('doctor.medical_records.edit', compact('medicalRecord', 'pets', 'medicines'));
     }
 
     public function update(Request $request, MedicalRecord $medicalRecord)
@@ -64,16 +84,35 @@ class MedicalRecordController extends Controller
             'diagnosis' => 'required|string',
             'treatment' => 'required|string',
             'date' => 'required|date',
+            'medicines' => 'nullable|array',
+            'medicines.*.id' => 'required_with:medicines|exists:medicines,id',
+            'medicines.*.quantity' => 'required_with:medicines|integer|min:1',
+            'medicines.*.dosage' => 'nullable|string',
         ]);
 
-        $medicalRecord->update($request->all());
+        $medicalRecord->update($request->only(['pet_id', 'diagnosis', 'treatment', 'date']));
 
-        return redirect()->route('doctor.medical_records.index')->with('success', 'Medical record updated.');
+        // Re-sync medicines
+        $syncData = [];
+        if ($request->has('medicines')) {
+            foreach ($request->medicines as $med) {
+                if (!empty($med['id'])) {
+                    $syncData[$med['id']] = [
+                        'quantity' => $med['quantity'] ?? 1,
+                        'dosage' => $med['dosage'] ?? null,
+                    ];
+                }
+            }
+        }
+        $medicalRecord->medicines()->sync($syncData);
+
+        return redirect()->route('doctor.medical-records.index')->with('success', 'Medical record updated.');
     }
 
     public function destroy(MedicalRecord $medicalRecord)
     {
+        $medicalRecord->medicines()->detach();
         $medicalRecord->delete();
-        return redirect()->route('doctor.medical_records.index')->with('success', 'Medical record deleted.');
+        return redirect()->route('doctor.medical-records.index')->with('success', 'Medical record deleted.');
     }
 }

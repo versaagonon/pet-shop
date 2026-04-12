@@ -1,92 +1,108 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col">
-            <nav class="flex mb-2" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <a href="{{ route('doctor.medical-records.index') }}" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors">Records</a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-3 h-3 text-slate-300 mx-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ isset($medicalRecord) ? 'Update Case' : 'New Entry' }}</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
-            <h2 class="text-2xl font-bold text-slate-800">{{ isset($medicalRecord) ? 'Modify Medical Record' : 'Create Clinical Entry' }}</h2>
+        <div>
+            <h2 style="font-size:22px;font-weight:700;margin:0;">{{ isset($medicalRecord) ? 'Edit Medical Record' : 'New Medical Record' }}</h2>
+            <p class="vethub-breadcrumb">Medical Records / {{ isset($medicalRecord) ? 'Edit' : 'Add New' }}</p>
         </div>
     </x-slot>
-
-    <div class="max-w-4xl">
-        <div class="card-enterprise p-8 md:p-12">
+    <div style="max-width:720px;">
+        <div class="stat-card-vethub">
             <form action="{{ isset($medicalRecord) ? route('doctor.medical-records.update', $medicalRecord) : route('doctor.medical-records.store') }}" method="POST">
                 @csrf
-                @if(isset($medicalRecord))
-                    @method('PUT')
-                @endif
-
-                <div class="space-y-8">
-                    <!-- Case Overview -->
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-3 pb-2 border-b border-slate-50">
-                            <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            </div>
-                            <h4 class="font-bold text-slate-800 uppercase tracking-tight text-sm">Case Foundations</h4>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-2">Patient Selection</label>
-                                <select name="pet_id" class="premium-input w-full" required>
-                                    <option value="">Select Target Patient</option>
-                                    @foreach($pets as $pet)
-                                        <option value="{{ $pet->id }}" {{ (isset($medicalRecord) && $medicalRecord->pet_id == $pet->id) || (isset($request_pet_id) && $request_pet_id == $pet->id) || old('pet_id') == $pet->id ? 'selected' : '' }}>
-                                            {{ $pet->name }} (Owner: {{ $pet->owner->name }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('pet_id') <p class="text-rose-500 text-[10px] font-bold mt-1 uppercase tracking-tighter">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-2">Examination Date</label>
-                                <input type="date" name="date" value="{{ $medicalRecord->date ?? date('Y-m-d') }}" class="premium-input w-full" required>
-                                @error('date') <p class="text-rose-500 text-[10px] font-bold mt-1 uppercase tracking-tighter">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-
+                @if(isset($medicalRecord)) @method('PUT') @endif
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-2">Primary Diagnosis (Summary)</label>
-                            <input type="text" name="diagnosis" value="{{ $medicalRecord->diagnosis ?? old('diagnosis') }}" class="premium-input w-full" placeholder="Summarize findings (e.g. Skin Allergy, Routine Checkup)" required>
-                            @error('diagnosis') <p class="text-rose-500 text-[10px] font-bold mt-1 uppercase tracking-tighter">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
-
-                    <!-- Detailed Management -->
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-3 pb-2 border-b border-slate-50">
-                            <div class="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-500">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.673.337a2 2 0 01-1.786 0l-.673-.337a6 6 0 00-3.86-.517l-2.387.477a2 2 0 00-1.022.547l.34 3.4a1 1 0 00.995.9l16.174-.015a1 1 0 00.995-.9l.34-3.4zM7 7l5 5 5-5M8 3h8"></path></svg>
-                            </div>
-                            <h4 class="font-bold text-slate-800 uppercase tracking-tight text-sm">Medical Management</h4>
+                            <label>Pet</label>
+                            <select name="pet_id" required>
+                                <option value="">Select Pet</option>
+                                @foreach($pets as $pet)
+                                    <option value="{{ $pet->id }}" {{ (isset($medicalRecord) && $medicalRecord->pet_id == $pet->id) || old('pet_id', request('pet_id')) == $pet->id || (isset($selectedPet) && $selectedPet && $selectedPet->id == $pet->id) ? 'selected' : '' }}>{{ $pet->name }} — {{ $pet->owner->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('pet_id') <p style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-2">Treatment & Medication Protocols</label>
-                            <textarea name="treatment" rows="6" class="premium-input w-full" placeholder="Detail the medical protocols applied, medications prescribed, and follow-up instructions..." required>{{ $medicalRecord->treatment ?? old('treatment') }}</textarea>
-                            @error('treatment') <p class="text-rose-500 text-[10px] font-bold mt-1 uppercase tracking-tighter">{{ $message }}</p> @enderror
+                            <label>Date</label>
+                            <input type="date" name="date" value="{{ isset($medicalRecord) ? $medicalRecord->date : old('date', date('Y-m-d')) }}" required>
                         </div>
                     </div>
-
-                    <!-- Form Actions -->
-                    <div class="flex items-center justify-between pt-8 border-t border-slate-100">
-                        <a href="{{ route('doctor.medical-records.index') }}" class="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors uppercase tracking-widest">Abort Case</a>
-                        <button type="submit" class="btn-mewah">
-                            {{ isset($medicalRecord) ? 'Sync Registry' : 'Finalize Record' }}
-                        </button>
+                    <div>
+                        <label>Diagnosis</label>
+                        <input type="text" name="diagnosis" value="{{ $medicalRecord->diagnosis ?? old('diagnosis') }}" placeholder="Enter diagnosis" required>
+                        @error('diagnosis') <p style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</p> @enderror
                     </div>
+                    <div>
+                        <label>Treatment</label>
+                        <textarea name="treatment" rows="3" placeholder="Describe treatment given" required>{{ $medicalRecord->treatment ?? old('treatment') }}</textarea>
+                        @error('treatment') <p style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</p> @enderror
+                    </div>
+
+                    <!-- Medicine / Prescription Section -->
+                    <div style="border-top:1px solid var(--border-light);padding-top:16px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <label style="margin:0;font-size:14px;font-weight:700;">💊 Prescription / Medicines</label>
+                            <button type="button" onclick="addMedicineRow()" class="btn-outline" style="padding:4px 12px;font-size:12px;">+ Add Medicine</button>
+                        </div>
+                        <div id="medicine-rows">
+                            @if(isset($medicalRecord) && $medicalRecord->medicines->count() > 0)
+                                @foreach($medicalRecord->medicines as $i => $med)
+                                <div class="medicine-row" style="display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:8px;margin-bottom:8px;align-items:end;">
+                                    <div>
+                                        <label style="font-size:11px;">Medicine</label>
+                                        <select name="medicines[{{ $i }}][id]" style="font-size:13px;">
+                                            <option value="">Select</option>
+                                            @foreach($medicines as $m)
+                                                <option value="{{ $m->id }}" {{ $med->id == $m->id ? 'selected' : '' }}>{{ $m->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size:11px;">Qty</label>
+                                        <input type="number" name="medicines[{{ $i }}][quantity]" value="{{ $med->pivot->quantity }}" min="1" style="font-size:13px;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:11px;">Dosage</label>
+                                        <input type="text" name="medicines[{{ $i }}][dosage]" value="{{ $med->pivot->dosage }}" placeholder="e.g. 2x sehari" style="font-size:13px;">
+                                    </div>
+                                    <button type="button" onclick="this.closest('.medicine-row').remove()" class="action-btn action-btn-delete" style="margin-bottom:2px;" title="Remove">
+                                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                @endforeach
+                            @endif
+                        </div>
+                        <div id="no-medicine-msg" style="text-align:center;padding:12px;color:var(--text-muted);font-size:13px;{{ (isset($medicalRecord) && $medicalRecord->medicines->count() > 0) ? 'display:none;' : '' }}">
+                            No medicines added yet. Click "+ Add Medicine" to prescribe.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--border-light);">
+                    <a href="{{ route('doctor.medical-records.index') }}" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-primary">{{ isset($medicalRecord) ? 'Save Changes' : 'Save Record' }}</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+    let medRowIndex = {{ isset($medicalRecord) ? $medicalRecord->medicines->count() : 0 }};
+    const medicineOptions = `<option value="">Select</option>@foreach($medicines as $m)<option value="{{ $m->id }}">{{ $m->name }}</option>@endforeach`;
+
+    function addMedicineRow() {
+        document.getElementById('no-medicine-msg').style.display = 'none';
+        const row = document.createElement('div');
+        row.className = 'medicine-row';
+        row.style.cssText = 'display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:8px;margin-bottom:8px;align-items:end;';
+        row.innerHTML = `
+            <div><label style="font-size:11px;">Medicine</label><select name="medicines[${medRowIndex}][id]" style="font-size:13px;">${medicineOptions}</select></div>
+            <div><label style="font-size:11px;">Qty</label><input type="number" name="medicines[${medRowIndex}][quantity]" value="1" min="1" style="font-size:13px;"></div>
+            <div><label style="font-size:11px;">Dosage</label><input type="text" name="medicines[${medRowIndex}][dosage]" placeholder="e.g. 2x sehari" style="font-size:13px;"></div>
+            <button type="button" onclick="this.closest('.medicine-row').remove()" class="action-btn action-btn-delete" style="margin-bottom:2px;" title="Remove"><svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        `;
+        document.getElementById('medicine-rows').appendChild(row);
+        medRowIndex++;
+    }
+    </script>
 </x-app-layout>

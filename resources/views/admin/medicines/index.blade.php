@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
             <div>
-                <h2 style="font-size:22px;font-weight:700;margin:0;">Medical Records</h2>
-                <p class="vethub-breadcrumb">Clinical / Medical Records / List</p>
+                <h2 style="font-size:22px;font-weight:700;margin:0;">Mixed Medicine</h2>
+                <p class="vethub-breadcrumb">Mixed Medicine / List</p>
             </div>
-            <a href="{{ route('doctor.medical-records.create') }}" class="btn-primary">+ Add Record</a>
+            <a href="{{ route('admin.medicines.create') }}" class="btn-primary">+ Add Mixed Medicine</a>
         </div>
     </x-slot>
 
@@ -18,29 +18,44 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Date</th>
-                    <th>Patient</th>
-                    <th>Diagnosis</th>
-                    <th>Doctor</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Compositions</th>
+                    <th>Stock</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($medicalRecords as $i => $record)
+                @forelse($medicines as $i => $medicine)
                 <tr>
                     <td>{{ $i + 1 }}</td>
-                    <td>{{ \Carbon\Carbon::parse($record->date)->format('d M Y') }}</td>
-                    <td><a href="#" class="text-link">{{ $record->pet->name }}</a></td>
-                    <td>{{ Str::limit($record->diagnosis, 50) }}</td>
-                    <td>{{ $record->doctor->name }}</td>
+                    <td>{{ $medicine->name }}</td>
+                    <td>Rp {{ number_format($medicine->price, 0, ',', '.') }}</td>
+                    <td>
+                        @if($medicine->compositions)
+                            @php $comps = json_decode($medicine->compositions, true); @endphp
+                            @if(is_array($comps))
+                                <ul style="margin:0;padding-left:16px;font-size:13px;">
+                                    @foreach($comps as $comp)
+                                        <li>{{ $comp['name'] }} ({{ $comp['qty'] }} qty)</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span style="font-size:13px;color:var(--text-muted);">{{ $medicine->compositions }}</span>
+                            @endif
+                        @else
+                            <span style="color:var(--text-muted);">-</span>
+                        @endif
+                    </td>
+                    <td>{{ number_format($medicine->stock) }}</td>
                     <td>
                         <div style="display:flex;gap:4px;">
-                            <a href="{{ route('doctor.medical-records.edit', $record) }}" class="action-btn action-btn-edit" title="Edit">
+                            <a href="{{ route('admin.medicines.edit', $medicine) }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:#22c55e;color:#fff;border-radius:6px;text-decoration:none;" title="Edit">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </a>
-                            <form action="{{ route('doctor.medical-records.destroy', $record) }}" method="POST" onsubmit="return confirm('Delete?')">
+                            <form action="{{ route('admin.medicines.destroy', $medicine) }}" method="POST" onsubmit="return confirm('Delete this medicine?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="action-btn action-btn-delete" title="Delete">
+                                <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:#22c55e;color:#fff;border-radius:6px;border:none;cursor:pointer;" title="Delete">
                                     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
                             </form>
@@ -53,6 +68,7 @@
             </tbody>
         </table>
     </div>
+
     <script>
     function filterTable() {
         const s = document.getElementById('searchInput').value.toLowerCase();

@@ -5,20 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Pet Clinic') }}</title>
+        <title>VetHub - Admin Vet Services</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <link rel="stylesheet" href="{{ asset('css/premium.css') }}">
     </head>
-    <body class="font-sans antialiased text-slate-800" x-data="{ sidebarOpen: false }">
-        <div class="app-container" :class="{ 'sidebar-open': sidebarOpen }">
-            <!-- Sidebar Navigation Overlay (Mobile) -->
+    <body style="font-family: 'Inter', sans-serif;" x-data="{ sidebarOpen: false }">
+        <div class="app-container">
+            <!-- Sidebar Overlay (Mobile) -->
             <div class="sidebar-overlay" :class="{ 'active': sidebarOpen }" @click="sidebarOpen = false"></div>
 
             <!-- Sidebar Navigation -->
@@ -26,46 +26,56 @@
 
             <!-- Main Content Area -->
             <div class="main-content">
-                <!-- Top Navbar -->
+                <!-- Top Navbar (VetHub style) -->
                 <header class="top-navbar no-print">
-                    <div class="flex items-center gap-4">
-                        <button @click="sidebarOpen = true" class="text-slate-500 hover:text-blue-600 transition-colors">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <div style="display:flex;align-items:center;gap:16px;">
+                        <!-- Hamburger Menu -->
+                        <button @click="sidebarOpen = !sidebarOpen" style="background:none;border:none;cursor:pointer;color:var(--text-body);padding:4px;">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                         </button>
+                        <!-- Calendar Button -->
+                        <a href="#" class="calendar-btn" style="font-size:13px;">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Calendar
+                        </a>
                     </div>
 
-                    <div class="flex items-center gap-4">
-                         <!-- User Info -->
-                        <div class="hidden sm:flex flex-col text-right mr-2">
-                            <span class="text-xs font-bold text-slate-800 leading-tight">{{ Auth::user()->name }}</span>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ Auth::user()->role }}</span>
+                    <div style="display:flex;align-items:center;gap:16px;">
+                        <!-- Notification Bell -->
+                        <button style="position:relative;background:none;border:none;cursor:pointer;color:var(--text-muted);padding:4px;">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            <span style="position:absolute;top:0;right:0;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid #fff;"></span>
+                        </button>
+
+                        <!-- User Name + Avatar -->
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span style="font-size:14px;font-weight:600;color:var(--text-dark);">{{ Auth::user()->name }}</span>
+                            <div style="width:36px;height:36px;border-radius:50%;background:var(--primary-light);border:2px solid var(--border-color);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                                <svg width="20" height="20" fill="var(--primary)" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                            </div>
                         </div>
-                        
-                        <x-dropdown align="right" width="48">
-                            <x-slot name="trigger">
-                                <button class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-colors focus:outline-none">
-                                    <svg class="w-6 h-6 border-2 border-transparent rounded-full" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                                </button>
-                            </x-slot>
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('profile.edit')">Pengaturan Profil</x-dropdown-link>
-                                <x-dropdown-link :href="route('logout')">
-                                    Keluar
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
                     </div>
                 </header>
 
-                <!-- Breadcrumb/Header Title -->
+                <!-- Toast Notifications -->
+                @if(session('success'))
+                <div class="toast-container" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition>
+                    <div class="toast toast-success">
+                        <svg width="18" height="18" fill="var(--success)" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        <span style="font-size:14px;color:var(--text-dark);">{{ session('success') }}</span>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Page Header -->
                 @isset($header)
-                <div class="px-8 pt-8">
-                     <h2 class="text-xl font-bold text-slate-800">{{ $header }}</h2>
+                <div style="padding:20px 24px 0;">
+                    {{ $header }}
                 </div>
                 @endisset
 
                 <!-- Page Content -->
-                <main class="p-8">
+                <main style="padding:20px 24px;">
                     {{ $slot }}
                 </main>
             </div>

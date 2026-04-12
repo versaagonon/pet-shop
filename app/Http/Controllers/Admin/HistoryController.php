@@ -17,7 +17,7 @@ class HistoryController extends Controller
 
     public function show(Pet $pet)
     {
-        $pet->load(['owner', 'medicalRecords.doctor', 'appointments']);
+        $pet->load(['owner', 'medicalRecords.doctor', 'medicalRecords.medicines', 'appointments']);
         return view('admin.history.show', compact('pet'));
     }
 }

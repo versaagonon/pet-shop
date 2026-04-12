@@ -1,24 +1,91 @@
-*.log
-.DS_Store
+# ==============================
+# Environment & Secrets
+# ==============================
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+.env.*
+!.env.example
+
+# ==============================
+# Dependencies
+# ==============================
+/vendor
 /node_modules
+
+# ==============================
+# Build / Compiled Assets
+# ==============================
 /public/build
 /public/hot
 /public/storage
+/public/css/*.map
+/public/js/*.map
+
+# ==============================
+# Laravel Storage & Cache
+# ==============================
 /storage/*.key
 /storage/pail
-/vendor
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# ==============================
+# IDE / Editor
+# ==============================
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# ==============================
+# PHP / Composer
+# ==============================
+.phpactor.json
+.phpunit.result.cache
+/.phpunit.cache
+/auth.json
+composer.phar
+
+# ==============================
+# OS Generated Files
+# ==============================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# ==============================
+# Log Files
+# ==============================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==============================
+# Homestead / Vagrant
+# ==============================
 Homestead.json
 Homestead.yaml
-Thumbs.db
+.vagrant
+
+# ==============================
+# Debug & Temp Files
+# ==============================
+check_db.php
+/laravel
+*.sql
+*.sqlite
+*.sqlite-journal
+*.bak
+*.tmp
+*.temp

@@ -21,6 +21,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class);
         Route::resource('invoices', \App\Http\Controllers\Admin\InvoiceController::class);
+        Route::resource('medicines', \App\Http\Controllers\Admin\MedicineController::class);
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+        Route::patch('/products/{product}/toggle', [\App\Http\Controllers\Admin\ProductController::class, 'toggleActive'])->name('products.toggle');
         Route::get('/history', [\App\Http\Controllers\Admin\HistoryController::class, 'index'])->name('history.index');
         Route::get('/history/pet/{pet}', [\App\Http\Controllers\Admin\HistoryController::class, 'show'])->name('history.show');
     });
@@ -32,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('owners', \App\Http\Controllers\Doctor\OwnerController::class);
         Route::resource('pets', \App\Http\Controllers\Doctor\PetController::class);
         Route::resource('appointments', \App\Http\Controllers\Doctor\AppointmentController::class);
+        Route::patch('/appointments/{appointment}/status', [\App\Http\Controllers\Doctor\AppointmentController::class, 'updateStatus'])->name('appointments.status');
         Route::resource('medical-records', \App\Http\Controllers\Doctor\MedicalRecordController::class);
     });
 

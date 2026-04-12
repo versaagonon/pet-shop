@@ -23,11 +23,16 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:vet,grooming,hotel',
+            'duration' => 'required|string',
             'price' => 'required|numeric|min:0',
         ]);
 
-        Service::create($request->all());
+        Service::create([
+            'name' => $request->name,
+            'duration' => $request->duration,
+            'type' => 'vet',
+            'price' => $request->price,
+        ]);
 
         return redirect()->route('admin.services.index')->with('success', 'Service added successfully.');
     }
@@ -41,11 +46,15 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:vet,grooming,hotel',
+            'duration' => 'required|string',
             'price' => 'required|numeric|min:0',
         ]);
 
-        $service->update($request->all());
+        $service->update([
+            'name' => $request->name,
+            'duration' => $request->duration,
+            'price' => $request->price,
+        ]);
 
         return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
     }

@@ -17,4 +17,11 @@ class MedicalRecord extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function medicines()
+    {
+        return $this->belongsToMany(Medicine::class, 'medical_record_medicine')
+                    ->withPivot('quantity', 'dosage')
+                    ->withTimestamps();
+    }
 }
