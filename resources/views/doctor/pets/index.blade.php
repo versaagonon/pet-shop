@@ -2,27 +2,27 @@
     <x-slot name="header">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
             <div>
-                <h2 style="font-size:22px;font-weight:700;margin:0;">Pets</h2>
-                <p class="vethub-breadcrumb">Patients / List</p>
+                <h2 style="font-size:22px;font-weight:700;margin:0;">Hewan Peliharaan</h2>
+                <p class="vethub-breadcrumb">Pasien / Daftar</p>
             </div>
-            <a href="{{ route('doctor.pets.create') }}" class="btn-primary">+ Add Pet</a>
+            <a href="{{ route('doctor.pets.create') }}" class="btn-primary">+ Tambah Hewan</a>
         </div>
     </x-slot>
 
     <div class="vethub-table-wrapper">
         <div class="table-controls">
-            <div class="table-controls-left">Show <select><option>10</option><option>25</option><option>50</option></select> entries</div>
-            <div class="table-controls-right">Search: <input type="text" id="searchInput" onkeyup="filterTable()"></div>
+            <div class="table-controls-left">Tampilkan <select><option>10</option><option>25</option><option>50</option></select> entri</div>
+            <div class="table-controls-right">Cari: <input type="text" id="searchInput" onkeyup="filterTable()"></div>
         </div>
         <table class="vethub-table" id="dataTable">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Owner</th>
-                    <th>Age / Gender</th>
-                    <th>Action</th>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Pemilik</th>
+                    <th>Umur / Jenis Kelamin</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,17 +35,17 @@
                     <td>{{ $pet->age ?? '-' }} / {{ $pet->gender === 'male' ? 'Jantan' : 'Betina' }}</td>
                     <td>
                         <div style="display:flex;gap:4px;">
-                            <a href="{{ route('doctor.pets.edit', $pet) }}" class="action-btn action-btn-edit" title="Edit">
+                            <a href="{{ route('doctor.pets.edit', $pet) }}" class="action-btn action-btn-edit" title="Ubah">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             </a>
-                            <a href="{{ route('doctor.medical-records.create', ['pet_id' => $pet->id]) }}" class="action-btn action-btn-info" title="Medical Record">
+                            <a href="{{ route('doctor.medical-records.create', ['pet_id' => $pet->id]) }}" class="action-btn action-btn-info" title="Rekam Medis">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             </a>
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" class="table-empty">No data available in table</td></tr>
+                <tr><td colspan="6" class="table-empty">Tidak ada data tersedia di tabel</td></tr>
                 @endforelse
             </tbody>
         </table>

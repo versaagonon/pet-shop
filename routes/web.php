@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('appointments', \App\Http\Controllers\Doctor\AppointmentController::class);
         Route::patch('/appointments/{appointment}/status', [\App\Http\Controllers\Doctor\AppointmentController::class, 'updateStatus'])->name('appointments.status');
         Route::resource('medical-records', \App\Http\Controllers\Doctor\MedicalRecordController::class);
+        Route::resource('inpatients', \App\Http\Controllers\Doctor\InpatientController::class);
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

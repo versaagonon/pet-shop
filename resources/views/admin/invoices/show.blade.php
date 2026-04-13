@@ -3,8 +3,8 @@
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;"
             class="no-print">
             <div>
-                <h2 style="font-size:22px;font-weight:700;margin:0;">Invoice Detail</h2>
-                <p class="vethub-breadcrumb">Invoices / Detail</p>
+                <h2 style="font-size:22px;font-weight:700;margin:0;">Detail Invoice</h2>
+                <p class="vethub-breadcrumb">Invoice / Detail</p>
             </div>
             <div style="display:flex;gap:8px;">
                 <button onclick="window.print()" class="btn-primary">
@@ -13,9 +13,9 @@
                             d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2 2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
                         </path>
                     </svg>
-                    Print
+                    Cetak
                 </button>
-                <a href="{{ route('admin.invoices.index') }}" class="btn-outline">Back to List</a>
+                <a href="{{ route('admin.invoices.index') }}" class="btn-outline">Kembali ke Daftar</a>
             </div>
         </div>
     </x-slot>
@@ -48,12 +48,12 @@
                         </div>
                         <div>
                             <div style="font-size:20px;font-weight:700;color:var(--text-dark);">VetHub</div>
-                            <div style="font-size:11px;color:var(--text-muted);">Pet Clinic Management</div>
+                            <div style="font-size:11px;color:var(--text-muted);">Manajemen Klinik Hewan</div>
                         </div>
                     </div>
                 </div>
                 <div style="text-align:right;">
-                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Invoice Reference</div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Referensi Invoice</div>
                     <div style="font-size:20px;font-weight:700;color:var(--text-dark);">
                         INV-{{ str_pad($invoice->id, 6, '0', STR_PAD_LEFT) }}</div>
                     <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
@@ -66,7 +66,7 @@
                 <div>
                     <div
                         style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">
-                        Bill To</div>
+                        Ditagihkan Ke</div>
                     <div style="font-size:16px;font-weight:700;color:var(--text-dark);">{{ $invoice->owner->name }}
                     </div>
                     <div style="font-size:13px;color:var(--text-body);margin-top:4px;">{{ $invoice->owner->phone }}
@@ -80,7 +80,7 @@
                         Status</div>
                     <span class="badge {{ $invoice->status === 'paid' ? 'badge-paid' : 'badge-unpaid' }}"
                         style="font-size:12px;padding:4px 14px;">
-                        {{ $invoice->status === 'paid' ? 'Paid' : 'Unpaid' }}
+                        {{ $invoice->status === 'paid' ? 'Lunas' : 'Belum Lunas' }}
                     </span>
                 </div>
             </div>
@@ -89,13 +89,13 @@
             <table class="vethub-table" style="margin-bottom:24px;">
                 <thead>
                     <tr>
-                        <th>Description</th>
-                        <th style="text-align:right;">Amount</th>
+                        <th>Deskripsi</th>
+                        <th style="text-align:right;">Jumlah</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Clinical & Veterinary Services</td>
+                        <td>Layanan Klinis & Dokter Hewan</td>
                         <td style="text-align:right;font-weight:700;">Rp
                             {{ number_format($invoice->total_amount, 0, ',', '.') }}</td>
                     </tr>

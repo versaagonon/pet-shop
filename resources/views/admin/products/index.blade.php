@@ -2,28 +2,28 @@
     <x-slot name="header">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
             <div>
-                <h2 style="font-size:22px;font-weight:700;margin:0;">Products</h2>
-                <p class="vethub-breadcrumb">Products / List</p>
+                <h2 style="font-size:22px;font-weight:700;margin:0;">Produk</h2>
+                <p class="vethub-breadcrumb">Produk / Daftar</p>
             </div>
-            <a href="{{ route('admin.products.create') }}" class="btn-primary">+ Add Product</a>
+            <a href="{{ route('admin.products.create') }}" class="btn-primary">+ Tambah Produk</a>
         </div>
     </x-slot>
 
     <div class="vethub-table-wrapper">
         <div class="table-controls">
-            <div class="table-controls-left">Show <select><option>10</option><option>25</option><option>50</option></select> entries</div>
-            <div class="table-controls-right">Search: <input type="text" id="searchInput" onkeyup="filterTable()"></div>
+            <div class="table-controls-left">Tampilkan <select><option>10</option><option>25</option><option>50</option></select> entri</div>
+            <div class="table-controls-right">Cari: <input type="text" id="searchInput" onkeyup="filterTable()"></div>
         </div>
         <table class="vethub-table" id="dataTable">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Bought Price</th>
-                    <th>Stock</th>
-                    <th>Action</th>
+                    <th>Nama Produk</th>
+                    <th>Kategori</th>
+                    <th>Harga Jual</th>
+                    <th>Harga Beli</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,14 +44,14 @@
                                 @csrf @method('PATCH')
                                 <button type="submit" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:600;{{ $product->is_active ? 'background:#3b82f6;color:#fff;' : 'background:#e5e7eb;color:#6b7280;' }}">
                                     <span style="width:14px;height:14px;border-radius:50%;background:{{ $product->is_active ? '#fff' : '#9ca3af' }};display:inline-block;"></span>
-                                    {{ $product->is_active ? 'Active' : 'Inactive' }}
+                                    {{ $product->is_active ? 'Aktif' : 'Nonaktif' }}
                                 </button>
                             </form>
                         </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="7" class="table-empty">No data available in table</td></tr>
+                <tr><td colspan="7" class="table-empty">Tidak ada data tersedia di tabel</td></tr>
                 @endforelse
             </tbody>
         </table>

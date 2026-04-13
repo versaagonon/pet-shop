@@ -61,7 +61,7 @@
         
         <div class="text-center pt-2">
              <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
-                Hanya untuk Personel Resmi. <br>
+                Hanya untuk karyawan resmi. <br>
                 <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-800 transition-colors">Minta Akses Akun</a>
              </p>
         </div>
