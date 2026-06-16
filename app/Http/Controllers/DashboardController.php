@@ -20,8 +20,8 @@ class DashboardController extends Controller
         // Revenue calculations
         $total_revenue = Invoice::where('status', 'paid')->sum('total_amount');
         $monthly_revenue = Invoice::where('status', 'paid')
-            ->whereMonth('created_at', $now->month)
-            ->whereYear('created_at', $now->year)
+            ->whereMonth('invoice_date', $now->month)
+            ->whereYear('invoice_date', $now->year)
             ->sum('total_amount');
 
         // New Registrations this month
@@ -34,19 +34,21 @@ class DashboardController extends Controller
 
         // Chart Data (Last 12 months)
         $months = [];
-        $owner_growth = [];
-        $pet_growth = [];
+        $invoice_paid_growth = [];
+        $invoice_unpaid_growth = [];
 
         for ($i = 11; $i >= 0; $i--) {
             $monthDate = Carbon::now()->subMonths($i);
             $months[] = $monthDate->format('M');
             
-            $owner_growth[] = Owner::whereMonth('created_at', $monthDate->month)
-                ->whereYear('created_at', $monthDate->year)
+            $invoice_paid_growth[] = Invoice::where('status', 'paid')
+                ->whereMonth('invoice_date', $monthDate->month)
+                ->whereYear('invoice_date', $monthDate->year)
                 ->count();
                 
-            $pet_growth[] = Pet::whereMonth('created_at', $monthDate->month)
-                ->whereYear('created_at', $monthDate->year)
+            $invoice_unpaid_growth[] = Invoice::where('status', 'unpaid')
+                ->whereMonth('invoice_date', $monthDate->month)
+                ->whereYear('invoice_date', $monthDate->year)
                 ->count();
         }
 
@@ -62,8 +64,8 @@ class DashboardController extends Controller
             'new_owners_count', 
             'new_pets_count', 
             'months', 
-            'owner_growth', 
-            'pet_growth',
+            'invoice_paid_growth', 
+            'invoice_unpaid_growth',
             'recent_activities'
         ));
     }

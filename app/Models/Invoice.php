@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    protected $fillable = ['owner_id', 'appointment_id', 'code', 'total_amount', 'description', 'status'];
+    protected $fillable = ['owner_id', 'appointment_id', 'code', 'total_amount', 'description', 'status', 'invoice_date'];
 
+    protected $casts = [
+        'invoice_date' => 'date',
+    ];
     public function owner()
     {
         return $this->belongsTo(Owner::class);

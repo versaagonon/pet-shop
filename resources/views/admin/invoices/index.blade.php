@@ -31,7 +31,7 @@
                     <td>{{ $i + 1 }}</td>
                     <td>
                         <a href="{{ route('admin.invoices.show', $invoice) }}" class="text-link">INV-{{ str_pad($invoice->id, 6, '0', STR_PAD_LEFT) }}</a>
-                        <div style="font-size:11px;color:var(--text-muted);">{{ \Carbon\Carbon::parse($invoice->created_at)->format('d M Y') }}</div>
+                        <div style="font-size:11px;color:var(--text-muted);">{{ \Carbon\Carbon::parse($invoice->invoice_date ?? $invoice->created_at)->format('d M Y') }}</div>
                     </td>
                     <td>{{ $invoice->owner->name }}</td>
                     <td style="font-weight:600;">Rp {{ number_format($invoice->total_amount, 0, ',', '.') }}</td>

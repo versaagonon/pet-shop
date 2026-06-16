@@ -37,6 +37,7 @@ class InvoiceController extends Controller
             'status' => 'required|in:paid,unpaid',
             'appointment_id' => 'nullable|exists:appointments,id',
             'description' => 'nullable|string',
+            'invoice_date' => 'nullable|date',
         ]);
 
         $invoice = Invoice::create([
@@ -45,6 +46,7 @@ class InvoiceController extends Controller
             'total_amount' => $request->total_amount,
             'description' => $request->description,
             'status' => $request->status,
+            'invoice_date' => $request->invoice_date ?: \Carbon\Carbon::today(),
             'code' => 'INV-' . strtoupper(Str::random(8)),
         ]);
 

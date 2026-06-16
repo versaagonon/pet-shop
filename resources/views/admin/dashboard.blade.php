@@ -63,8 +63,8 @@
             data: {
                 labels: {!! json_encode($months) !!},
                 datasets: [
-                    { label: 'Pemilik', data: {!! json_encode($owner_growth) !!}, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)', fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2 },
-                    { label: 'Hewan', data: {!! json_encode($pet_growth) !!}, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.05)', fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2 }
+                    { label: 'Invoice Lunas', data: {!! json_encode($invoice_paid_growth) !!}, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)', fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2 },
+                    { label: 'Invoice Belum Lunas', data: {!! json_encode($invoice_unpaid_growth) !!}, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.05)', fill: true, tension: 0.4, pointRadius: 3, borderWidth: 2 }
                 ]
             },
             options: {

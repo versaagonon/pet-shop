@@ -37,6 +37,12 @@
                     </div>
 
                     <div>
+                        <label>Tanggal Invoice</label>
+                        <input type="date" name="invoice_date" value="{{ old('invoice_date', date('Y-m-d')) }}" required>
+                        @error('invoice_date') <p style="color:var(--danger);font-size:12px;margin-top:4px;">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
                         <label>Deskripsi</label>
                         <textarea name="description" rows="2" placeholder="Detail layanan, item resep, dll.">{{ old('description') }}</textarea>
                     </div>
