@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/products/{product}/toggle', [\App\Http\Controllers\Admin\ProductController::class, 'toggleActive'])->name('products.toggle');
         Route::get('/history', [\App\Http\Controllers\Admin\HistoryController::class, 'index'])->name('history.index');
         Route::get('/history/pet/{pet}', [\App\Http\Controllers\Admin\HistoryController::class, 'show'])->name('history.show');
+        Route::resource('expenses', \App\Http\Controllers\Admin\ExpenseController::class);
     });
 
     // Doctor Routes
