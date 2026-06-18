@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
         User::create([
             'name' => 'Admin Pet Clinic',
             'email' => 'admin@petclinic.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('AdminSyahla2026!!'),
             'role' => 'admin',
         ]);
 
@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
         User::create([
             'name' => 'Dr. Hewan',
             'email' => 'doctor@petclinic.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('DoctorSyahla2026!!'),
             'role' => 'doctor',
         ]);
     }
