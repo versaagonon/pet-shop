@@ -29,6 +29,8 @@ class Appointment extends Model
         self::STATUS_BOOKING  => self::STATUS_ADVENT,
         self::STATUS_ADVENT   => self::STATUS_CHECKUP,
         self::STATUS_CHECKUP  => self::STATUS_PHARMACY,
+        self::STATUS_PHARMACY => self::STATUS_PAYMENT,
+        self::STATUS_PAYMENT  => self::STATUS_DONE,
     ];
 
     protected $fillable = ['pet_id', 'type', 'appointment_at', 'status', 'notes', 'doctor_id'];
