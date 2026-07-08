@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/history', [\App\Http\Controllers\Admin\HistoryController::class, 'index'])->name('history.index');
         Route::get('/history/pet/{pet}', [\App\Http\Controllers\Admin\HistoryController::class, 'show'])->name('history.show');
         Route::resource('expenses', \App\Http\Controllers\Admin\ExpenseController::class);
+        Route::resource('accounts', \App\Http\Controllers\Admin\AccountController::class);
     });
 
     // Doctor Routes
